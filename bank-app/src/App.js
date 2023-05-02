@@ -15,27 +15,28 @@ function App() {
     }
   ]);
 
-  const [userInput, setUserInput] = React.useState({});
-
-  const handleChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setUserInput(values => ({ ...values, [name]: value }));
-  }
+  const [count, setCount] = React.useState(1);
 
   function handelAccounts(event) {
     event.preventDefault();
-    setAccounts([...Accounts, userInput])
+
+    const user = {
+      id: count,
+      customerName: event.target.customerName.value || 'a',
+      accountNumber: event.target.accountNumber.value || 'a',
+      accountType: event.target.accountType.value || 'a'
+    }
+    setCount(count + 1);
+
+    setAccounts([...Accounts, user])
   }
 
-  React.useEffect(() => {
-    setUserInput(values => ({ ['id']: Accounts.length + 1, }))
-  }, [])
 
   function handelDeleteAccount(id) {
     let NewAccounts = Accounts.filter((user) => {
-      if (user.id !== id)
+      if (user.id !== id) {
         return user;
+      }
     });
     setAccounts(NewAccounts);
   }
@@ -124,24 +125,18 @@ function App() {
                   placeholder="Customer Name"
                   type="text"
                   name="customerName"
-                  value={userInput.customerName || ""}
-                  onChange={handleChange}
                 />
                 <input
                   className="form-control mt-3"
                   placeholder="Account Number"
                   type="text"
                   name="accountNumber"
-                  value={userInput.accountNumber || ""}
-                  onChange={handleChange}
                 />
                 <input
                   className="form-control mt-3"
                   placeholder="Account Type"
                   type="text"
                   name="accountType"
-                  value={userInput.accountType || ""}
-                  onChange={handleChange}
                 />
 
                 <button className="Hero-button btn btn-dark mt-3 ms-3" type="submit">
